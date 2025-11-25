@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '../ui/Buttons';
@@ -23,7 +24,7 @@ export const Hero: React.FC = () => {
                         initial={{ y: 100, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8, ease: "circOut" }}
-                        className="font-heading text-[15vw] lg:text-[11vw] leading-[1.1] text-black uppercase tracking-tighter mb-8"
+                        className="font-heading text-[15vw] lg:text-[11vw] leading-[0.95] text-black uppercase tracking-tighter mb-8"
                     >
                         Beyond<br/>Human
                     </motion.h1>
@@ -41,7 +42,7 @@ export const Hero: React.FC = () => {
                     
                     <div className="flex flex-wrap gap-4">
                         <Button href="#programs" variant="primary">Start Protocol</Button>
-                        <Button href="#results" variant="outline">View Results</Button>
+                        <Button href="#results" variant="outline">Real Results</Button>
                     </div>
                 </motion.div>
             </div>
@@ -58,19 +59,19 @@ export const Hero: React.FC = () => {
 
                     <div className="w-full h-full bg-white relative overflow-hidden border-2 border-black shadow-2xl">
                         <MotionImg 
-                          src="https://picsum.photos/seed/fitnesshero/1000/1500"
+                          src="/hero.jpg"
                           alt="Stanislav Portrait"
                           initial={{ scale: 1.2, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
                           transition={{ duration: 1.2, ease: "easeOut" }}
-                          className="w-full h-full object-cover grayscale contrast-125"
+                          className="w-full h-full object-cover contrast-110"
                         />
                         
                         {/* Overlay Text */}
-                        <div className="absolute top-0 left-0 w-full p-6 bg-gradient-to-b from-black/80 to-transparent text-white">
+                        <div className="absolute top-0 left-0 w-full p-6 bg-gradient-to-b from-black/40 to-transparent text-white">
                            <div className="flex justify-between items-start">
-                               <p className="font-sub text-[10px] uppercase tracking-[0.3em] font-bold text-cobalt">Elite Protocol</p>
-                               <span className="font-heading text-xl">01</span>
+                               <p className="font-sub text-[10px] uppercase tracking-[0.3em] font-bold text-cobalt drop-shadow-md">Elite Protocol</p>
+                               <span className="font-heading text-xl drop-shadow-md">01</span>
                            </div>
                         </div>
                     </div>
