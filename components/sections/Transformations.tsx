@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { SectionTitle, SubTitle } from '../ui/Typography';
@@ -16,7 +15,7 @@ export const Transformations: React.FC<TransformationsProps> = ({ items }) => {
       <div className="container mx-auto px-6">
         <div className="mb-24 flex flex-col md:flex-row justify-between items-end">
            <div>
-              <SubTitle>Evidence</SubTitle>
+              <SubTitle className="!text-cobalt">Evidence</SubTitle>
               <SectionTitle className="mb-0">Client<br />Results</SectionTitle>
            </div>
            <p className="text-right font-body text-black/70 mt-6 md:mt-0 max-w-sm">
@@ -35,15 +34,15 @@ export const Transformations: React.FC<TransformationsProps> = ({ items }) => {
               className="group cursor-pointer"
             >
               {/* Split Image Card */}
-              <div className="flex h-[400px] border-2 border-black relative overflow-hidden mb-6">
+              <div className="flex h-[400px] border-2 border-black relative overflow-hidden mb-6 shadow-lg">
                  {/* Before */}
                  <div className="w-1/2 h-full relative border-r border-black">
                     <img 
                       src={item.imageBefore} 
                       alt={`${item.name} Before`} 
-                      className="w-full h-full object-cover grayscale contrast-125"
+                      className="w-full h-full object-cover" // Removed grayscale
                     />
-                    <div className="absolute top-4 left-4 bg-black/80 text-white px-2 py-1 text-[10px] font-bold font-sub uppercase tracking-widest backdrop-blur-sm">
+                    <div className="absolute top-4 left-4 bg-black/90 text-white px-2 py-1 text-[10px] font-bold font-sub uppercase tracking-widest backdrop-blur-sm">
                        Before
                     </div>
                  </div>
@@ -52,23 +51,23 @@ export const Transformations: React.FC<TransformationsProps> = ({ items }) => {
                     <img 
                       src={item.imageAfter} 
                       alt={`${item.name} After`} 
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 contrast-125"
+                      className="w-full h-full object-cover" // Removed grayscale
                     />
-                     <div className="absolute top-4 right-4 bg-cobalt text-white px-2 py-1 text-[10px] font-bold font-sub uppercase tracking-widest shadow-lg">
+                     <div className="absolute top-4 right-4 bg-volt text-black px-2 py-1 text-[10px] font-bold font-sub uppercase tracking-widest shadow-lg border border-black">
                        After
                     </div>
                  </div>
 
                  {/* Stats Overlay on Hover */}
-                 <div className="absolute bottom-0 left-0 w-full bg-white border-t-2 border-black p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                     <p className="font-heading text-2xl uppercase text-black mb-1">{item.stats}</p>
-                     <p className="font-sub text-[10px] uppercase tracking-widest text-cobalt">{item.timeframe}</p>
+                 <div className="absolute bottom-0 left-0 w-full bg-black border-t-2 border-volt p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                     <p className="font-heading text-2xl uppercase text-white mb-1">{item.stats}</p>
+                     <p className="font-sub text-[10px] uppercase tracking-widest text-volt">{item.timeframe}</p>
                  </div>
               </div>
 
               <div className="flex justify-between items-end px-2">
                  <h3 className="font-heading text-3xl uppercase text-black">{item.name}</h3>
-                 <span className="font-sub text-[10px] uppercase tracking-widest text-black/50 underline decoration-cobalt decoration-2 underline-offset-4">Read Case Study</span>
+                 <span className="font-sub text-[10px] uppercase tracking-widest text-black/50 underline decoration-cobalt decoration-2 underline-offset-4 group-hover:text-cobalt transition-colors">Read Case Study</span>
               </div>
             </MotionDiv>
           ))}

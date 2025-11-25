@@ -4,7 +4,7 @@ import { ArrowUpRight } from 'lucide-react';
 
 interface ButtonProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'outline' | 'minimal';
+  variant?: 'primary' | 'outline' | 'minimal' | 'volt';
   onClick?: (e?: React.MouseEvent) => void;
   href?: string;
   className?: string;
@@ -26,7 +26,8 @@ export const Button: React.FC<ButtonProps> = ({
   const variants = {
     primary: "bg-black border-black text-white hover:bg-transparent hover:text-black",
     outline: "border-black text-black bg-transparent hover:bg-black hover:text-white",
-    minimal: "bg-transparent text-black border-b-2 !border-t-0 !border-x-0 !border-black !px-0 !py-2 hover:opacity-60"
+    minimal: "bg-transparent text-black border-b-2 !border-t-0 !border-x-0 !border-black !px-0 !py-2 hover:opacity-60",
+    volt: "bg-volt border-volt text-black hover:bg-black hover:border-black hover:text-white"
   };
 
   const content = (
