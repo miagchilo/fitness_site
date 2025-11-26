@@ -19,7 +19,7 @@ export const ShopPreview: React.FC<ShopPreviewProps> = ({ items, onViewProduct }
          <div className="flex flex-col md:flex-row justify-between items-end mb-20">
             <div>
               <SubTitle className="!text-volt">Premium Gear</SubTitle>
-              <SectionTitle className="!text-white">Equip for <br />War</SectionTitle>
+              <SectionTitle className="!text-white">Equip for <br />All</SectionTitle>
             </div>
             <div className="mb-4">
                 <Button variant="outline" className="!text-white !border-white hover:!bg-white hover:!text-black" onClick={() => alert("Full online store functionality launching in Q4 2024. Join the newsletter to be notified.")}>Visit Full Store</Button>

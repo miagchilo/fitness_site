@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { SectionTitle, SubTitle } from '../ui/Typography';
@@ -10,6 +11,19 @@ interface TransformationsProps {
 }
 
 export const Transformations: React.FC<TransformationsProps> = ({ items }) => {
+  
+  // Specific fallback for "Before" images
+  const handleBeforeError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=600&auto=format&fit=crop";
+    e.currentTarget.onerror = null;
+  };
+
+  // Specific fallback for "After" images
+  const handleAfterError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop";
+    e.currentTarget.onerror = null;
+  };
+
   return (
     <section id="results" className="py-32 bg-white relative border-t border-black/5">
       <div className="container mx-auto px-6">
@@ -40,7 +54,8 @@ export const Transformations: React.FC<TransformationsProps> = ({ items }) => {
                     <img 
                       src={item.imageBefore} 
                       alt={`${item.name} Before`} 
-                      className="w-full h-full object-cover" // Removed grayscale
+                      onError={handleBeforeError}
+                      className="w-full h-full object-cover" 
                     />
                     <div className="absolute top-4 left-4 bg-black/90 text-white px-2 py-1 text-[10px] font-bold font-sub uppercase tracking-widest backdrop-blur-sm">
                        Before
@@ -51,7 +66,8 @@ export const Transformations: React.FC<TransformationsProps> = ({ items }) => {
                     <img 
                       src={item.imageAfter} 
                       alt={`${item.name} After`} 
-                      className="w-full h-full object-cover" // Removed grayscale
+                      onError={handleAfterError}
+                      className="w-full h-full object-cover" 
                     />
                      <div className="absolute top-4 right-4 bg-volt text-black px-2 py-1 text-[10px] font-bold font-sub uppercase tracking-widest shadow-lg border border-black">
                        After

@@ -34,26 +34,65 @@ const App: React.FC = () => {
   const [activeProgram, setActiveProgram] = useState<Program | null>(null);
   const [activeProduct, setActiveProduct] = useState<ShopItem | null>(null);
 
+  // Validation Helper: Ensures we don't try to load broken local paths from DB
+  const isValidUrl = (url: any) => typeof url === 'string' && (url.startsWith('http') || url.startsWith('https'));
+
   useEffect(() => {
     const fetchData = async () => {
-      if (!supabase) return; // Fallback to mocks if no client
+      if (!supabase) return;
 
       try {
+        // 1. PROGRAMS
         const { data: progData } = await supabase.from('programs').select('*');
-        if (progData && progData.length > 0) setPrograms(progData as any);
+        if (progData && progData.length > 0) {
+            const mappedPrograms = progData.map((p: any) => ({
+                ...p,
+                longDescription: p.long_description || p.longDescription
+            }));
+            setPrograms(mappedPrograms);
+        }
 
+        // 2. BLOG
         const { data: blogData } = await supabase.from('blog_posts').select('*');
-        if (blogData && blogData.length > 0) setPosts(blogData as any);
+        if (blogData && blogData.length > 0) {
+            const mappedPosts = blogData.map((b: any) => ({
+                ...b,
+                authorRole: b.author_role || b.authorRole
+            }));
+            setPosts(mappedPosts);
+        }
         
+        // 3. SHOP
         const { data: shopData } = await supabase.from('shop_items').select('*');
         if (shopData && shopData.length > 0) setProducts(shopData as any);
 
+        // 4. TRANSFORMATIONS
         const { data: transData } = await supabase.from('transformations').select('*');
-        if (transData && transData.length > 0) setTransformations(transData as any);
+        if (transData && transData.length > 0) {
+            const mappedTransformations = transData.map((t: any, index: number) => {
+                // Determine fallback index safely
+                const fallbackIndex = index % MOCK_TRANSFORMATIONS.length;
+                
+                return {
+                    id: t.id,
+                    name: t.name,
+                    stats: t.stats,
+                    timeframe: t.timeframe,
+                    // Check DB field -> Check JS field -> Fallback to constant
+                    imageBefore: isValidUrl(t.image_before) ? t.image_before : (isValidUrl(t.imageBefore) ? t.imageBefore : MOCK_TRANSFORMATIONS[fallbackIndex].imageBefore),
+                    imageAfter: isValidUrl(t.image_after) ? t.image_after : (isValidUrl(t.imageAfter) ? t.imageAfter : MOCK_TRANSFORMATIONS[fallbackIndex].imageAfter)
+                };
+            });
+            setTransformations(mappedTransformations);
+        } else {
+            // If DB is empty, explicitly set mocks
+            setTransformations(MOCK_TRANSFORMATIONS);
+        }
 
       } catch (error) {
         console.error("Error fetching data:", error);
-        // Silently fail to mocks
+        // Fail silently to mocks
+        setTransformations(MOCK_TRANSFORMATIONS);
       }
     };
 
@@ -117,7 +156,6 @@ const App: React.FC = () => {
     }
   };
 
-  // Render content based on view state
   const renderContent = () => {
     if (view === 'not-found') {
       return <NotFound onReturnHome={handleReturnHome} />;
