@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/layout/Navbar';
 import { Hero } from './components/sections/Hero';
@@ -34,8 +33,8 @@ const App: React.FC = () => {
   const [activeProgram, setActiveProgram] = useState<Program | null>(null);
   const [activeProduct, setActiveProduct] = useState<ShopItem | null>(null);
 
-  // Validation Helper: Ensures we don't try to load broken local paths from DB
-  const isValidUrl = (url: any) => typeof url === 'string' && (url.startsWith('http') || url.startsWith('https'));
+  // Helper to check for valid URLs
+  const isValidUrl = (url: any) => typeof url === 'string' && (url.startsWith('http') || url.startsWith('/'));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,15 +83,11 @@ const App: React.FC = () => {
                 };
             });
             setTransformations(mappedTransformations);
-        } else {
-            // If DB is empty, explicitly set mocks
-            setTransformations(MOCK_TRANSFORMATIONS);
         }
 
       } catch (error) {
         console.error("Error fetching data:", error);
         // Fail silently to mocks
-        setTransformations(MOCK_TRANSFORMATIONS);
       }
     };
 
@@ -179,7 +174,7 @@ const App: React.FC = () => {
 
     return (
       <>
-        <Hero />
+        <Hero onApply={() => handleStartForm()} />
         <Ticker />
         <About />
         <Programs programs={programs} onViewProtocol={handleViewProtocol} />

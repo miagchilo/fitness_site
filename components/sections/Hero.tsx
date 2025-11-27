@@ -4,7 +4,11 @@ import { Button } from '../ui/Buttons';
 
 const MotionDiv = motion.div as any;
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  onApply?: () => void;
+}
+
+export const Hero: React.FC<HeroProps> = ({ onApply }) => {
   const { scrollY } = useScroll();
   const yImage = useTransform(scrollY, [0, 1000], [0, 150]);
 
@@ -33,8 +37,10 @@ export const Hero: React.FC = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
+            {/* Left Content - Typography & Buttons */}
             <div className="lg:col-span-7 flex flex-col justify-center relative z-20">
                 <div className="overflow-hidden relative">
+                     {/* Text Accent */}
                     <div className="absolute -left-4 top-0 bottom-0 w-2 bg-cobalt" />
                     <motion.h1 
                         initial={{ y: 100, opacity: 0 }}
@@ -57,17 +63,20 @@ export const Hero: React.FC = () => {
                     </p>
                     
                     <div className="flex flex-wrap gap-4">
-                        <Button href="#programs" variant="volt">Start Protocol</Button>
+                        <Button onClick={onApply} variant="volt">Apply for Coaching</Button>
+                        <Button href="#programs" variant="primary">View Protocols</Button>
                         <Button href="#results" variant="outline">Real Results</Button>
                     </div>
                 </motion.div>
             </div>
 
+            {/* Right Content - Visual */}
             <div className="lg:col-span-5 relative lg:h-[80vh] min-h-[50vh]">
                  <MotionDiv
                    style={{ y: yImage }}
                    className="w-full h-full relative"
                  >
+                    {/* Decorative Elements */}
                     <div className="absolute -top-6 -right-6 w-24 h-24 border-t-4 border-r-4 border-black hidden lg:block" />
                     <div className="absolute -bottom-6 -left-6 w-24 h-24 border-b-4 border-l-4 border-volt hidden lg:block" />
 
@@ -84,6 +93,7 @@ export const Hero: React.FC = () => {
                           className="w-full h-full object-cover"
                         />
                         
+                        {/* Overlay Text */}
                         <div className="absolute top-0 left-0 w-full p-6 bg-gradient-to-b from-black/40 to-transparent text-white z-20">
                            <div className="flex justify-between items-start">
                                <p className="font-sub text-[10px] uppercase tracking-[0.3em] font-bold text-volt drop-shadow-md">Elite Protocol</p>
@@ -96,6 +106,7 @@ export const Hero: React.FC = () => {
         </div>
       </div>
 
+      {/* Decorative Background Text */}
       <div className="absolute right-0 bottom-0 opacity-[0.05] pointer-events-none select-none">
           <span className="font-heading text-[20vw] leading-none uppercase text-cobalt">Est.2024</span>
       </div>

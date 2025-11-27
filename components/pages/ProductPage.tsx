@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowLeft, ShoppingBag, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, Mail, Check, Loader2 } from 'lucide-react';
 import { ShopItem } from '../../types';
 import { Navbar } from '../layout/Navbar';
 import { Button } from '../ui/Buttons';
@@ -13,15 +13,29 @@ interface ProductPageProps {
 
 export const ProductPage: React.FC<ProductPageProps> = ({ product, onNavigate }) => {
   const [selectedSize, setSelectedSize] = useState(product.sizes ? product.sizes[0] : null);
-  const [added, setAdded] = useState(false);
+  const [showEmailInput, setShowEmailInput] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [product]);
 
-  const handleAddToCart = () => {
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+  const handleJoinClick = () => {
+    setShowEmailInput(true);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate API call to save email
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      setShowEmailInput(false);
+    }, 1500);
   };
 
   return (
@@ -45,7 +59,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product, onNavigate })
                 transition={{ duration: 0.8 }}
                 className="lg:col-span-7"
             >
-                <div className="aspect-square bg-mist relative overflow-hidden mb-4">
+                <div className="aspect-square bg-mist relative overflow-hidden mb-4 border border-black/5">
                     <img 
                         src={product.image} 
                         alt={product.title} 
@@ -53,8 +67,8 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product, onNavigate })
                     />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                     <div className="aspect-square bg-mist" />
-                     <div className="aspect-square bg-mist" />
+                     <div className="aspect-square bg-mist border border-black/5" />
+                     <div className="aspect-square bg-mist border border-black/5" />
                 </div>
             </motion.div>
 
@@ -97,18 +111,73 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product, onNavigate })
                  )}
 
                  <div className="mb-12">
-                     <Button 
-                        variant="primary" 
-                        className="w-full justify-center" 
-                        onClick={handleAddToCart}
-                        icon={!added}
-                     >
-                        {added ? (
-                            <span className="flex items-center gap-2"><Check size={16} /> Added to Cart</span>
+                     <AnimatePresence mode="wait">
+                        {!showEmailInput && !isSuccess ? (
+                             <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                             >
+                                 <Button 
+                                    variant="volt" 
+                                    className="w-full justify-center !py-5" 
+                                    onClick={handleJoinClick}
+                                    icon={true}
+                                 >
+                                    Join Waiting List
+                                 </Button>
+                                 <p className="text-center mt-3 text-xs text-granite">
+                                    Limited stock releasing Q4 2024. Get notified.
+                                 </p>
+                             </motion.div>
+                        ) : isSuccess ? (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="bg-volt/10 border border-volt p-6 text-center"
+                            >
+                                <div className="w-12 h-12 bg-volt text-black rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <Check size={20} />
+                                </div>
+                                <h4 className="font-heading uppercase text-xl mb-1">You're on the list</h4>
+                                <p className="text-sm text-black/70">We will text you when the drop goes live.</p>
+                            </motion.div>
                         ) : (
-                            <span className="flex items-center gap-2">Add to Cart - {product.price}</span>
+                            <motion.form
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                onSubmit={handleSubmit}
+                                className="space-y-4"
+                            >
+                                <div className="relative">
+                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-granite w-5 h-5" />
+                                    <input 
+                                        type="email" 
+                                        required
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="ENTER YOUR EMAIL" 
+                                        className="w-full bg-mist border border-black/10 p-4 pl-12 text-black focus:border-black focus:outline-none placeholder:text-granite font-body text-sm uppercase tracking-wider"
+                                    />
+                                </div>
+                                <Button 
+                                    variant="primary" 
+                                    className="w-full justify-center" 
+                                    onClick={() => {}} // Handled by form submit
+                                >
+                                    {isSubmitting ? <Loader2 className="animate-spin" /> : 'Join List'}
+                                </Button>
+                                <button 
+                                    type="button" 
+                                    onClick={() => setShowEmailInput(false)} 
+                                    className="w-full text-center text-xs uppercase tracking-widest text-granite hover:text-black py-2"
+                                >
+                                    Cancel
+                                </button>
+                            </motion.form>
                         )}
-                     </Button>
+                     </AnimatePresence>
                  </div>
 
                  <div className="bg-mist p-6 border border-black/5">
